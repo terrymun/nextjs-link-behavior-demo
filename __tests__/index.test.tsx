@@ -1,14 +1,60 @@
-import { render, screen } from '@testing-library/react'
-import Home from '@/pages/index'
+import React from "react";
+import { render } from "@testing-library/react";
 
-describe('Home', () => {
-  it('renders a heading', () => {
-    render(<Home />)
+import Link from "next/link";
 
-    const heading = screen.getByRole('heading', {
-      name: /welcome to next\.js!/i,
-    })
+describe("Index", () => {
+  it("should render <Link> element with new behavior", () => {
+    const { container } = render(
+      <Link href="https://example.com" data-testid="link">
+        Link element with new behavior
+      </Link>
+    );
+    expect(container).toMatchInlineSnapshot(`
+      <div>
+        <a
+          href="https://example.com"
+        >
+          Link element with new behavior
+        </a>
+      </div>
+    `);
+  });
 
-    expect(heading).toBeInTheDocument()
-  })
-})
+  it("should render <Link> element with nested child with new behavior", () => {
+    const { container } = render(
+      <Link href="https://example.com" data-testid="link">
+        <strong data-testid="content">Link element with new behavior</strong>
+      </Link>
+    );
+    expect(container).toMatchInlineSnapshot(`
+      <div>
+        <strong
+          data-testid="content"
+        >
+          Link element with new behavior
+        </strong>
+      </div>
+    `);
+  });
+
+  it("should render <Link> element with legacy behavior", () => {
+    const { container } = render(
+      <Link href="https://example.com" legacyBehavior>
+        <a href="#" data-testid="link">
+          Link element with legacy behavior
+        </a>
+      </Link>
+    );
+    expect(container).toMatchInlineSnapshot(`
+      <div>
+        <a
+          data-testid="link"
+          href="#"
+        >
+          Link element with legacy behavior
+        </a>
+      </div>
+    `);
+  });
+});
